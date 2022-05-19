@@ -68,8 +68,8 @@
             xmlHttp.open( "GET", 'https://pokeapi.co/api/v2/pokemon?limit=69420&offset=0', true ); // false for synchronous request
             xmlHttp.send( null );
             var pokemonList = null
-            var p1={'id':50,'hp':'max','I':12,'L':100,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[1,5,7,9]}
-            var p2={'id':90,'hp':90,'I':0,'L':10,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[1,5,7,9]}
+            var p1={'id':889,'hp':'max','I':12,'L':100,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[1,5,7,9]}
+            var p2={'id':200,'hp':90,'I':0,'L':10,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[1,5,7,9]}
             
             xmlHttp.onload = function(){
                 pokemonList = JSON.parse(xmlHttp.responseText)
@@ -83,7 +83,7 @@
                     
                 
                 },50)
-                document.write('<style>  #progressbar2 {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbar2inner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}#progressbar {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbarinner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}body {background-image: url(\'https://i1.sndcdn.com/artworks-000045941811-q634od-t500x500.jpg\');background-color: blueviolet;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;}</style>')
+                document.write('<style>  #progressbar2 {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbar2inner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}#progressbar {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbarinner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}body {background-image: url(\'\');background-color: gray;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;}</style>')
                 
                 otherP(p1)
                 youP(p2)
