@@ -7,6 +7,12 @@
     </head>
     <body>
         <script>
+            function getMove(v){
+            let xmlHttpp = new XMLHttpRequest();
+            xmlHttpp.open( "GET", 'https://pokeapi.co/api/v2/move/'+v, false ); // false for synchronous request
+            xmlHttpp.send( null );
+            return(JSON.parse(xmlHttpp.responseText))
+            }
             function getPokemon(v){
             let xmlHttpp = new XMLHttpRequest();
             xmlHttpp.open( "GET", v, false ); // false for synchronous request
@@ -25,8 +31,17 @@
                     'speed':Math.floor(Math.floor((2 * B + I + E) * L / 100 + 5) * N.speed),
                 })
             }
+            function attack(Astat,Ostat,move){
+                if(Math.floor(Math.random()*100)>getMove(move).accuracy){
+                return(0)
+                } else {
+                return((2*Astat.L+10)/250*Astat.att/Ostat.def*getMove(move).power+2) //add status effects??
+                }
+            }
             function youP(pstat){
                 let num=pstat.id
+                //console.log(getPokemon(getPokemon(pokemonList.results[num].url).moves[pstat.moves[0]].move.url))
+                //console.log(((2*pstat.L+10)/250*30/10*getPokemon(getPokemon(pokemonList.results[num].url).moves[pstat.moves[0]].move.url).power+2))
                 //console.log(getStat(87,21,0,30,{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1}))
                 document.write('<div style="position:absolute;top:55%;right:5%;border-radius:10px 0 10px 0;width:450px;height:70px;background-color:rgba(50,50,50,.8);padding:20px;"><a style="color:red;font-family: Tahoma, sans-serif;">'+getPokemon(pokemonList.results[num].url).name+'</a><div id="progressbar2"><div id="progressbar2inner"></div></div></div>')
                     document.write('<div style="left:200px;top:80%;position:absolute;width: 360px;height: 70px;background: rgba(10,10,10,.5);border-radius: 50%;filter:blur(5px);"></div>')
@@ -34,12 +49,12 @@
                 }
                 function otherP(pstat){
                     let num=pstat.id
-                    console.log(getPokemon(getPokemon(getPokemon(pokemonList.results[num].url).species.url).growth_rate.url))
+                    //console.log(getPokemon(getPokemon(getPokemon(pokemonList.results[num].url).species.url).growth_rate.url))
                     //console.log()
                     document.write('<div style="position:absolute;top:10%;left:5%;border-radius:10px 0 10px 0;width:450px;height:70px;background-color:rgba(50,50,50,.8);padding:20px;"><a style="color:red;font-family: Tahoma, sans-serif;">'+getPokemon(pokemonList.results[num].url).name+'</a><div id="progressbar"><div id="progressbarinner"></div></div>')
                     document.write('</div>')
                     document.write('<div style="right:200px;top:37%;position:absolute;width: 360px;height: 70px;background: rgba(10,10,10,.5);border-radius: 50%;filter:blur(5px);"></div>')
-                document.write('<img style="right:280px;top:24%;position:absolute;"src="'+getPokemon(pokemonList.results[num].url).sprites.front_default+'"width="200"></img>')
+                document.write('<img style="right:280px;top:26%;position:absolute;"src="'+getPokemon(pokemonList.results[num].url).sprites.front_default+'"width="200"></img>')
                 }
                 function sethealth(a,o,bp = false){
                     if(!bp){
@@ -53,15 +68,27 @@
             xmlHttp.open( "GET", 'https://pokeapi.co/api/v2/pokemon?limit=69420&offset=0', true ); // false for synchronous request
             xmlHttp.send( null );
             var pokemonList = null
-            var p1={'id':50,'hp':'max','I':12,'L':30,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1}}
-            var p2={'id':90,'hp':90,'I':0,'L':100,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1}}
+            var p1={'id':50,'hp':'max','I':12,'L':100,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[1,5,7,9]}
+            var p2={'id':90,'hp':90,'I':0,'L':10,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[1,5,7,9]}
+            
             xmlHttp.onload = function(){
-                
-                setInterval(function(){sethealth(p1,p2)},50)
-                document.write('<style>  #progressbar2 {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbar2inner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}#progressbar {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbarinner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}body {background-image: url(\'https://t4.ftcdn.net/jpg/02/34/65/41/360_F_234654183_zTdkfNirZzENMcCkAWKVqtcJ6JFS1VCr.jpg\');background-color: blueviolet;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;}</style>')
                 pokemonList = JSON.parse(xmlHttp.responseText)
+                p1.att = getStat(p1.id,p1.I,p1.E,p1.L,p1.N).att
+                p1.def = getStat(p1.id,p1.I,p1.E,p1.L,p1.N).def
+                p2.att = getStat(p2.id,p2.I,p2.E,p2.L,p2.N).att
+                p2.def = getStat(p2.id,p2.I,p2.E,p2.L,p2.N).def
+                setInterval(function(){
+                    sethealth(p1,p2)
+                    
+                    
+                
+                },50)
+                document.write('<style>  #progressbar2 {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbar2inner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}#progressbar {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbarinner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}body {background-image: url(\'https://i1.sndcdn.com/artworks-000045941811-q634od-t500x500.jpg\');background-color: blueviolet;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;}</style>')
+                
                 otherP(p1)
                 youP(p2)
+                console.log(attack(p1,p2,1))
+                
                 
                 
             }
