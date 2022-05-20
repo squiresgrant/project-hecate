@@ -31,63 +31,136 @@
                     'speed':Math.floor(Math.floor((2 * B + I + E) * L / 100 + 5) * N.speed),
                 })
             }
-            function attack(Astat,Ostat,move){
-                if(Math.floor(Math.random()*100)>getMove(move).accuracy){
-                return(0)
-                } else {
-                return((2*Astat.L+10)/250*Astat.att/Ostat.def*getMove(move).power+2) //add status effects??
-                }
-            }
+            
             function youP(pstat){
                 let num=pstat.id
                 //console.log(getPokemon(getPokemon(pokemonList.results[num].url).moves[pstat.moves[0]].move.url))
                 //console.log(((2*pstat.L+10)/250*30/10*getPokemon(getPokemon(pokemonList.results[num].url).moves[pstat.moves[0]].move.url).power+2))
                 //console.log(getStat(87,21,0,30,{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1}))
-                document.write('<div style="position:absolute;top:55%;right:5%;border-radius:10px 0 10px 0;width:450px;height:70px;background-color:rgba(50,50,50,.8);padding:20px;"><a style="color:red;font-family: Tahoma, sans-serif;">'+getPokemon(pokemonList.results[num].url).name+'</a><div id="progressbar2"><div id="progressbar2inner"></div></div></div>')
+                document.write('<b><div style="filter: drop-shadow(0 0 0.75rem black);border-inline: 5px solid;position:absolute;top:55%;right:5%;border-radius:10px 0 10px 0;width:450px;height:70px;background-color:rgba(50,50,50,.8);padding:20px;"><a style="color:red;font-family: Tahoma, sans-serif;">'+getPokemon(pokemonList.results[num].url).name+'</a><div id="progressbar2"><div id="progressbar2inner"></div></div><a style="color:red;font-family: Tahoma, sans-serif;"id="cur2"></a><a style="color:red;font-family: Tahoma, sans-serif;">/</a><a style="color:red;font-family: Tahoma, sans-serif;" id="max2"></a></div>')
                     document.write('<div style="left:200px;top:80%;position:absolute;width: 360px;height: 70px;background: rgba(10,10,10,.5);border-radius: 50%;filter:blur(5px);"></div>')
-                document.write('<img style="left:280px;top:64%;position:absolute;"src="'+getPokemon(pokemonList.results[num].url).sprites.back_default+'"width="200"></img>')
+                document.write('<img style="left:280px;top:62%;position:absolute;"src="'+getPokemon(pokemonList.results[num].url).sprites.back_default+'"width="200"></img></b>')
                 }
                 function otherP(pstat){
                     let num=pstat.id
                     //console.log(getPokemon(getPokemon(getPokemon(pokemonList.results[num].url).species.url).growth_rate.url))
                     //console.log()
-                    document.write('<div style="position:absolute;top:10%;left:5%;border-radius:10px 0 10px 0;width:450px;height:70px;background-color:rgba(50,50,50,.8);padding:20px;"><a style="color:red;font-family: Tahoma, sans-serif;">'+getPokemon(pokemonList.results[num].url).name+'</a><div id="progressbar"><div id="progressbarinner"></div></div>')
+                    document.write('<b><div style="filter: drop-shadow(0 0 0.75rem black);border-inline: 5px solid;position:absolute;top:10%;left:5%;border-radius:10px 0 10px 0;width:450px;height:70px;background-color:rgba(50,50,50,.8);padding:20px;"><a style="color:red;font-family: Tahoma, sans-serif;">'+getPokemon(pokemonList.results[num].url).name+'</a><div id="progressbar"><div id="progressbarinner"></div></div><a style="color:red;font-family: Tahoma, sans-serif;"id="cur1"></a><a style="color:red;font-family: Tahoma, sans-serif;">/</a><a style="color:red;font-family: Tahoma, sans-serif;" id="max1"></a>')
                     document.write('</div>')
                     document.write('<div style="right:200px;top:37%;position:absolute;width: 360px;height: 70px;background: rgba(10,10,10,.5);border-radius: 50%;filter:blur(5px);"></div>')
-                document.write('<img style="right:280px;top:26%;position:absolute;"src="'+getPokemon(pokemonList.results[num].url).sprites.front_default+'"width="200"></img>')
+                document.write('<img style="right:280px;top:24%;position:absolute;"src="'+getPokemon(pokemonList.results[num].url).sprites.front_default+'"width="200"></img></b>')
                 }
-                function sethealth(a,o,bp = false){
+                function update(a,o,bp = false){
                     if(!bp){
                     if(a.hp>getStat(a.id,a.I,a.E,a.L,a.N).hp||a.hp=='max'){a.hp=getStat(a.id,a.I,a.E,a.L,a.N).hp}
                     if(o.hp>getStat(o.id,o.I,o.E,o.L,o.N).hp||a.hp=='max'){o.hp=getStat(o.id,o.I,o.E,o.L,o.N).hp}
                     }
+                    if(document.getElementById('m1')!=undefined){
+                        document.getElementById('m1pp').innerHTML = a.moves[0].pp
+                        document.getElementById('m2pp').innerHTML = a.moves[1].pp
+                        document.getElementById('m3pp').innerHTML = a.moves[2].pp
+                        document.getElementById('m4pp').innerHTML = a.moves[3].pp
+                    }
+                    document.getElementById('cur1').innerHTML=a.hp
+                    document.getElementById('max1').innerHTML=getStat(a.id,a.I,a.E,a.L,a.N).hp
+                    document.getElementById('cur2').innerHTML=o.hp
+                    document.getElementById('max2').innerHTML=getStat(o.id,o.I,o.E,o.L,o.N).hp
                     document.getElementById('progressbarinner').style.width=(a.hp/getStat(a.id,a.I,a.E,a.L,a.N).hp)*100+'%';
                     document.getElementById('progressbar2inner').style.width=(o.hp/getStat(o.id,o.I,o.E,o.L,o.N).hp)*100+'%';
+                }
+                function openAttacks(p1,p2){
+                    console.log(p1+p2)
+                    document.getElementById('fight').style.display='none'
+                    document.getElementById('switch').style.display='none'
+                    //document.getElementById('item').style.display='none'
+                    document.getElementById('run').style.display='none'
+                    
+                    if(document.getElementById('m1')!=undefined){
+                        document.getElementById('m1').style.display='block'
+                    document.getElementById('m2').style.display='block'
+                    document.getElementById('m3').style.display='block'
+                    document.getElementById('m4').style.display='block'
+                    document.getElementById('m5').style.display='block'
+                    } else {
+                    document.write('<div id=\'m1\' style="position:absolute;right:5%;bottom:17%;width:18%;height:80px;background-color:orange;" onclick="p1.hp-=attack(p2,p1,'+p1.moves[0].id+')">'+getMove(p1.moves[0].id).name+' (<a id="m1pp">'+p1.moves[0].pp+'</a>/'+getMove(p1.moves[0].id).pp+')</div>')
+                    document.write('<div id=\'m2\' style="border-radius:0 0 10px 0;position:absolute;right:5%;bottom:5%;width:18%;height:80px;background-color:orange;"onclick="p1.hp-=attack(p2,p1,'+p1.moves[1].id+')">'+getMove(p1.moves[1].id).name+' (<a id="m2pp">'+p1.moves[1].pp+'</a>/'+getMove(p1.moves[1].id).pp+')</div>')
+                    document.write('<div id=\'m3\' style="border-radius:10px 0 0 0;position:absolute;right:24%;bottom:17%;width:18%;height:80px;background-color:orange;"onclick="p1.hp-=attack(p2,p1,'+p1.moves[2].id+')">'+getMove(p1.moves[2].id).name+' (<a id="m3pp">'+p1.moves[2].pp+'</a>/'+getMove(p1.moves[2].id).pp+')</div>')
+                    document.write('<div id=\'m4\' style="position:absolute;right:24%;bottom:5%;width:18%;height:80px;background-color:orange;"onclick="p1.hp-=attack(p2,p1,'+p1.moves[3].id+')">'+getMove(p1.moves[3].id).name+' (<a id="m4pp">'+p1.moves[3].pp+'</a>/'+getMove(p1.moves[3].id).pp+')</div>')
+                    document.write('<div id=\'m5\' style="position:absolute;right:42%;bottom:5%;width:9%;height:40px;background-color:pink;"onclick="RenderOptions(p1,p2,true)">back</div>')
+                    }
+                }
+                function RenderOptions(p1,p2,fromAttack=false){
+                    if(fromAttack){
+                    document.getElementById('m1').style.display='none'
+                    document.getElementById('m2').style.display='none'
+                    document.getElementById('m3').style.display='none'
+                    document.getElementById('m4').style.display='none'
+                    document.getElementById('m5').style.display='none'
+                    document.getElementById('fight').style.display='block'
+                    document.getElementById('switch').style.display='block'
+                    //document.getElementById('item').style.display='block'
+                    document.getElementById('run').style.display='block'
+                    } else {
+                    document.write('<div id=\'fight\' style="position:absolute;right:5%;bottom:17%;width:37%;height:80px;background-color:red;">fight(placeholder)</div>')
+                    document.write('<div id=\'switch\' style="border-radius:0 0 10px 0;position:absolute;right:5%;bottom:5%;width:18%;height:80px;background-color:green;">switch(placeholder)</div>')
+                    //document.write('<div id=\'item\' style="border-radius:10px 0 0 0;position:absolute;right:24%;bottom:17%;width:18%;height:80px;background-color:yellow;">item(placeholder)</div>')
+                    document.write('<div id=\'run\' style="position:absolute;right:24%;bottom:5%;width:18%;height:80px;background-color:blue;">run(placeholder)</div>')
+                    document.getElementById('fight').addEventListener('click', function(){
+                       openAttacks(p1,p2)
+                    })
+                }
                 }
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open( "GET", 'https://pokeapi.co/api/v2/pokemon?limit=69420&offset=0', true ); // false for synchronous request
             xmlHttp.send( null );
             var pokemonList = null
-            var p1={'id':889,'hp':'max','I':12,'L':100,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[1,5,7,9]}
-            var p2={'id':200,'hp':90,'I':0,'L':10,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[1,5,7,9]}
-            
+            var p1={'id':223,'hp':'max','I':12,'L':100,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[{'id':10},{'id':130},{'id':140},{'id':110}]}
+            var p2={'id':266,'hp':'max','I':0,'L':80,'E':20,'N':{'att':1,'def':1,'s.att':1,'s.def':1,'speed':1},'moves':[{'id':10},{'id':130},{'id':140},{'id':110}]}
+            function attack(Astat,Ostat,move){
+                for(let m in p1.moves){
+                    if(p1.moves[m].id==move){
+                        if(p1.moves[m].pp==0){return(0)}
+                    }
+                }
+                for(let m in p1.moves){
+                    if(p1.moves[m].id==move){
+                        p1.moves[m].pp-=1
+                    }
+                }
+                if(Math.floor(Math.random()*100)>getMove(move).accuracy){
+                return(0)
+                } else {
+                
+                return(Math.floor((2*Astat.L+10)/250*Astat.att/Ostat.def*getMove(move).power+2)) //add status effects??
+                
+                }
+            }
             xmlHttp.onload = function(){
                 pokemonList = JSON.parse(xmlHttp.responseText)
+                for(let move in p1.moves){
+                    p1.moves[move].pp = getMove(p1.moves[move].id).pp
+                }
+                for(let move in p2.moves){
+                    p2.moves[move].pp = getMove(p2.moves[move].id).pp
+                }
+                if(p1.hp=='max'){p1.hp=getStat(p1.id,p1.I,p1.E,p1.L,p1.N).hp}
+                if(p2.hp=='max'){p2.hp=getStat(p2.id,p2.I,p2.E,p2.L,p2.N).hp}
                 p1.att = getStat(p1.id,p1.I,p1.E,p1.L,p1.N).att
                 p1.def = getStat(p1.id,p1.I,p1.E,p1.L,p1.N).def
                 p2.att = getStat(p2.id,p2.I,p2.E,p2.L,p2.N).att
                 p2.def = getStat(p2.id,p2.I,p2.E,p2.L,p2.N).def
                 setInterval(function(){
-                    sethealth(p1,p2)
+                    update(p1,p2)
                     
                     
                 
                 },50)
-                document.write('<style>  #progressbar2 {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbar2inner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}#progressbar {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbarinner {background-color: red;width: 80%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}body {background-image: url(\'\');background-color: gray;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;}</style>')
-                
+                document.write('<style>  #progressbar2 {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbar2inner {background-color: red;width: 100%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}#progressbar {background-color: black;border-radius: 13px;/* (height of inner div) / 2 + padding */padding: 3px;}#progressbarinner {background-color: red;width: 100%;/* Adjust with JavaScript */height: 20px;border-radius: 10px;}body {background-image: url(\'\');background-color: gray;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;}</style>')
+             
                 otherP(p1)
                 youP(p2)
-                console.log(attack(p1,p2,1))
+                RenderOptions(p1,p2)
+                p2.hp-=(attack(p1,p2,1))
                 
                 
                 
